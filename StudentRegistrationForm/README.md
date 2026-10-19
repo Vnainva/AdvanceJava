@@ -49,5 +49,5 @@ A Java-based Student Registration Form developed as part of Advanced Java practi
 
 ## 👩‍💻 Author
 
-**Kritika Agarwal**
+**Vishal Nainva**
 
