@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineBook - Interactive System Output Preview</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    .screen-curve {
+      height: 18px;
+      background: linear-gradient(180deg, #e2e8f0 0%, rgba(255, 255, 255, 0.1) 100%);
+      box-shadow: 0 10px 25px rgba(255, 255, 255, 0.4);
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+      transform: perspective(300px) rotateX(-25deg);
+    }
+    .seat {
+      width: 32px;
+      height: 30px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease-in-out;
+      cursor: pointer;
+      user-select: none;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen antialiased flex flex-col font-sans">
+
+  <!-- Top Navigation Bar -->
+  <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50 px-4 py-3">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+        <span class="text-2xl">🎬</span>
+        <span class="text-xl font-black tracking-wider text-white">CINE<span class="text-red-500">BOOK</span></span>
+        <span class="text-xs bg-red-950/80 text-red-400 border border-red-800/60 px-2 py-0.5 rounded-full font-medium">Live Output Demo</span>
+      </div>
+
+      <nav class="flex items-center gap-1 sm:gap-2 text-sm font-medium">
+        <button onclick="switchTab('home')" id="tab-btn-home" class="nav-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition text-red-500 font-semibold bg-slate-800">
+          Movies
+        </button>
+        <button onclick="switchTab('booking')" id="tab-btn-booking" class="nav-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition">
+          Seat Selection
+        </button>
+        <button onclick="switchTab('history')" id="tab-btn-history" class="nav-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition">
+          My Bookings
+        </button>
+        <button onclick="switchTab('admin')" id="tab-btn-admin" class="nav-btn px-3 py-1.5 rounded-lg text-amber-400 hover:text-amber-300 hover:bg-slate-800 transition flex items-center gap-1">
+          🛡️ Admin
+        </button>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <span class="text-xs bg-slate-800 border border-slate-700 text-slate-300 px-2.5 py-1 rounded-full">
+          👤 John Doe (Customer)
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6">
+
+    <!-- TAB 1: HOME / MOVIES CATALOG -->
+    <section id="view-home" class="space-y-6">
+      <!-- Hero Banner -->
+      <div class="rounded-2xl bg-gradient-to-r from-red-950/50 via-slate-900 to-indigo-950/50 border border-slate-800 p-6 sm:p-8 text-center relative overflow-hidden">
+        <div class="relative z-10 max-w-2xl mx-auto space-y-3">
+          <span class="text-xs tracking-widest uppercase bg-red-600 text-white font-bold px-3 py-1 rounded-full">Now Showing in Theatres</span>
+          <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Experience Cinema Like Never Before</h1>
+          <p class="text-slate-400 text-sm">Select a blockbuster below to pick your theatre, showtime, and seats with real-time validation.</p>
+        </div>
+      </div>
+
+      <!-- Movies Grid -->
+      <div class="flex justify-between items-center pt-2">
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <span>Featured Films</span>
+          <span class="text-xs bg-slate-800 text-slate-400 px-2 py-0.5 rounded">4 Titles</span>
+        </h2>
+        <span class="text-xs text-slate-400">Click "Book Tickets" to select seats</span>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" id="movie-cards-container">
+        <!-- Oppenheimer -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg flex flex-col hover:border-slate-700 transition">
+          <div class="h-60 bg-slate-800 relative overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=800&auto=format&fit=crop&q=60" class="w-full h-full object-cover">
+            <span class="absolute top-2 right-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">IMAX 2D</span>
+          </div>
+          <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+            <div>
+              <span class="text-xs text-slate-400 font-medium">Biography / Drama</span>
+              <h3 class="text-base font-bold text-white">Oppenheimer</h3>
+              <p class="text-xs text-slate-400 mt-1">3h 0m &bull; English &bull; Dolby Atmos</p>
+            </div>
+            <button onclick="startBooking('Oppenheimer', 250.00, 'PVR Grand Cineplex', '10:30 AM')" class="w-full py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg text-sm transition">
+              Book Tickets
+            </button>
+          </div>
+        </div>
+
+        <!-- Interstellar -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg flex flex-col hover:border-slate-700 transition">
+          <div class="h-60 bg-slate-800 relative overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&auto=format&fit=crop&q=60" class="w-full h-full object-cover">
+            <span class="absolute top-2 right-2 bg-indigo-600 text-white text-xs font-bold px-2 py-1 rounded">Re-Release</span>
+          </div>
+          <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+            <div>
+              <span class="text-xs text-slate-400 font-medium">Sci-Fi / Adventure</span>
+              <h3 class="text-base font-bold text-white">Interstellar</h3>
+              <p class="text-xs text-slate-400 mt-1">2h 49m &bull; English &bull; IMAX Luxe</p>
+            </div>
+            <button onclick="startBooking('Interstellar', 280.00, 'IMAX Luxe Cinema', '06:15 PM')" class="w-full py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg text-sm transition">
+              Book Tickets
+            </button>
+          </div>
+        </div>
+
+        <!-- Inception -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg flex flex-col hover:border-slate-700 transition">
+          <div class="h-60 bg-slate-800 relative overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=800&auto=format&fit=crop&q=60" class="w-full h-full object-cover">
+            <span class="absolute top-2 right-2 bg-slate-800 text-slate-300 text-xs font-bold px-2 py-1 rounded">4K Remaster</span>
+          </div>
+          <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+            <div>
+              <span class="text-xs text-slate-400 font-medium">Sci-Fi / Action</span>
+              <h3 class="text-base font-bold text-white">Inception</h3>
+              <p class="text-xs text-slate-400 mt-1">2h 28m &bull; English &bull; 4K Dolby</p>
+            </div>
+            <button onclick="startBooking('Inception', 240.00, 'PVR Grand Cineplex', '04:00 PM')" class="w-full py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg text-sm transition">
+              Book Tickets
+            </button>
+          </div>
+        </div>
+
+        <!-- The Dark Knight -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-lg flex flex-col hover:border-slate-700 transition">
+          <div class="h-60 bg-slate-800 relative overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=800&auto=format&fit=crop&q=60" class="w-full h-full object-cover">
+            <span class="absolute top-2 right-2 bg-amber-600 text-white text-xs font-bold px-2 py-1 rounded">Cult Classic</span>
+          </div>
+          <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+            <div>
+              <span class="text-xs text-slate-400 font-medium">Action / Crime</span>
+              <h3 class="text-base font-bold text-white">The Dark Knight</h3>
+              <p class="text-xs text-slate-400 mt-1">2h 32m &bull; English &bull; IMAX 70mm</p>
+            </div>
+            <button onclick="startBooking('The Dark Knight', 300.00, 'IMAX Luxe Cinema', '09:00 PM')" class="w-full py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg text-sm transition">
+              Book Tickets
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: INTERACTIVE SEAT SELECTION -->
+    <section id="view-booking" class="hidden space-y-6">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div>
+          <button onclick="switchTab('home')" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 mb-1">
+            &larr; Back to Movies
+          </button>
+          <h2 class="text-2xl font-bold text-white" id="seat-view-movie-title">Oppenheimer</h2>
+          <p class="text-xs text-slate-400" id="seat-view-subtitle">PVR Grand Cineplex &bull; Today at 10:30 AM &bull; ₹ 250.00 / ticket</p>
+        </div>
+        <div class="text-right">
+          <span class="text-xs text-slate-400">Availability</span>
+          <div class="text-sm font-bold text-emerald-400">38 / 40 Seats Open</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Cinema Screen & Seat Grid (Left 2 Columns) -->
+        <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-6 text-center">
+          <div class="max-w-md mx-auto mb-8">
+            <div class="screen-curve mb-2"></div>
+            <div class="text-xs uppercase tracking-widest text-slate-500 font-semibold">Cinema Screen Direction</div>
+          </div>
+
+          <!-- Dynamic Seat Grid Container -->
+          <div class="flex flex-col items-center gap-2.5 my-6" id="seat-map-container">
+            <!-- Populated via JS -->
+          </div>
+
+          <!-- Legend -->
+          <div class="flex justify-center items-center gap-6 pt-4 border-t border-slate-800 text-xs text-slate-400">
+            <div class="flex items-center gap-2">
+              <div class="w-4 h-4 bg-slate-800 border border-slate-700 rounded"></div>
+              <span>Available</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-4 h-4 bg-emerald-500 rounded"></div>
+              <span class="text-emerald-400 font-medium">Selected</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-4 h-4 bg-slate-950 border border-slate-800 text-slate-600 rounded flex items-center justify-center font-bold">✕</div>
+              <span>Booked (Locked)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Real-Time Booking Sidebar (Right Column) -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between space-y-4">
+          <div class="space-y-4">
+            <h3 class="text-lg font-bold text-white border-b border-slate-800 pb-2">Booking Summary</h3>
+
+            <div class="space-y-2 text-xs">
+              <div class="flex justify-between">
+                <span class="text-slate-400">Movie:</span>
+                <span class="font-semibold text-white" id="summary-movie">Oppenheimer</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-400">Theatre:</span>
+                <span class="font-semibold text-white" id="summary-theatre">PVR Grand Cineplex</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-400">Showtime:</span>
+                <span class="font-semibold text-white" id="summary-time">10:30 AM</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-400">Price Per Seat:</span>
+                <span class="font-semibold text-white" id="summary-unit-price">₹ 250.00</span>
+              </div>
+            </div>
+
+            <div class="p-3 bg-slate-950 border border-slate-800 rounded-xl space-y-2">
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-400">Selected Seats:</span>
+                <span class="font-bold text-emerald-400" id="summary-seats">None</span>
+              </div>
+              <div class="flex justify-between text-xs">
+                <span class="text-slate-400">Tickets Count:</span>
+                <span class="font-bold text-white" id="summary-count">0</span>
+              </div>
+              <div class="flex justify-between text-base font-bold pt-2 border-t border-slate-800">
+                <span class="text-white">Total Amount:</span>
+                <span class="text-amber-400" id="summary-total">₹ 0.00</span>
+              </div>
+            </div>
+
+            <div id="seat-conflict-alert" class="hidden text-xs bg-red-950/80 border border-red-800 text-red-300 p-2.5 rounded-lg">
+              ⚠️ Seat availability conflict prevented duplicate booking!
+            </div>
+          </div>
+
+          <button id="btn-proceed-checkout" onclick="openCheckoutModal()" disabled class="w-full py-3 bg-red-600 hover:bg-red-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold rounded-xl text-sm transition">
+            Proceed to Payment
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: CHECKOUT / PAYMENT MODAL -->
+    <div id="modal-checkout" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+        <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+          <h3 class="text-lg font-bold text-white flex items-center gap-2">
+            <span>💳 Simulated Payment</span>
+          </h3>
+          <button onclick="closeCheckoutModal()" class="text-slate-400 hover:text-white text-lg">&times;</button>
+        </div>
+
+        <div class="space-y-3 text-xs">
+          <div class="p-3 bg-slate-950 rounded-lg space-y-1">
+            <div class="flex justify-between text-slate-300">
+              <span id="modal-movie">Oppenheimer</span>
+              <span class="font-bold text-emerald-400" id="modal-seats">B1, B2</span>
+            </div>
+            <div class="flex justify-between text-slate-400">
+              <span>Payable Total:</span>
+              <span class="font-extrabold text-amber-400 text-sm" id="modal-total">₹ 500.00</span>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-slate-400 mb-1">Select Payment Method</label>
+            <select id="checkout-payment-mode" class="w-full bg-slate-950 border border-slate-700 text-white rounded-lg p-2.5">
+              <option value="CARD">Credit / Debit Card (Simulated)</option>
+              <option value="UPI">UPI (Google Pay / PhonePe)</option>
+              <option value="NETBANKING">Net Banking</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-slate-400 mb-1">Card / UPI ID</label>
+            <input type="text" class="w-full bg-slate-950 border border-slate-700 text-white rounded-lg p-2.5" value="4242-XXXX-XXXX-4242">
+            <p class="text-[11px] text-slate-500 mt-1">Simulated transaction. No actual charge made.</p>
+          </div>
+        </div>
+
+        <div class="flex gap-2 pt-2">
+          <button onclick="closeCheckoutModal()" class="w-1/3 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-semibold">
+            Cancel
+          </button>
+          <button onclick="completePayment()" class="w-2/3 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-bold transition">
+            Confirm & Pay Now
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: CONFIRMATION RECEIPT VIEW -->
+    <section id="view-confirmation" class="hidden space-y-6">
+      <div class="max-w-lg mx-auto bg-slate-900 border-2 border-dashed border-slate-700 rounded-2xl p-6 sm:p-8 space-y-5 shadow-2xl relative">
+        <div class="text-center space-y-1">
+          <span class="text-4xl">🎉</span>
+          <h2 class="text-2xl font-black text-white">Ticket Confirmed!</h2>
+          <p class="text-xs text-slate-400">Your reservation has been confirmed and saved to the database.</p>
+          <div class="inline-block mt-2 bg-red-600 text-white text-xs font-extrabold px-3 py-1 rounded-full" id="confirm-ref">
+            CBK-892401
+          </div>
+        </div>
+
+        <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 space-y-2 text-xs">
+          <div class="flex justify-between border-b border-slate-800/80 pb-2">
+            <span class="text-slate-400">Movie Title</span>
+            <span class="font-bold text-white" id="confirm-movie">Oppenheimer</span>
+          </div>
+          <div class="flex justify-between border-b border-slate-800/80 pb-2">
+            <span class="text-slate-400">Cinema & Screen</span>
+            <span class="font-bold text-white" id="confirm-theatre">PVR Grand Cineplex</span>
+          </div>
+          <div class="flex justify-between border-b border-slate-800/80 pb-2">
+            <span class="text-slate-400">Date & Showtime</span>
+            <span class="font-bold text-white" id="confirm-time">Today | 10:30 AM</span>
+          </div>
+          <div class="flex justify-between border-b border-slate-800/80 pb-2">
+            <span class="text-slate-400">Booked Seats</span>
+            <span class="font-bold text-emerald-400 text-sm" id="confirm-seats">B1, B2</span>
+          </div>
+          <div class="flex justify-between pt-1">
+            <span class="text-slate-400">Payment Status</span>
+            <span class="font-bold text-emerald-400" id="confirm-payment">SUCCESS (CARD)</span>
+          </div>
+          <div class="flex justify-between text-sm font-extrabold text-amber-400 pt-1">
+            <span>Total Paid:</span>
+            <span id="confirm-total">₹ 500.00</span>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-2 pt-2">
+          <button onclick="window.print()" class="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-lg text-xs">
+            🖨️ Print Ticket
+          </button>
+          <button onclick="switchTab('history')" class="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-lg text-xs">
+            View My History
+          </button>
+          <button onclick="switchTab('home')" class="flex-1 py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg text-xs">
+            Home
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: BOOKING HISTORY -->
+    <section id="view-history" class="hidden space-y-5">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <div>
+          <h2 class="text-xl font-bold text-white">Customer Booking History</h2>
+          <p class="text-xs text-slate-400">All tickets issued under account: john@example.com</p>
+        </div>
+        <button onclick="switchTab('home')" class="py-1.5 px-3 bg-red-600 text-white text-xs font-semibold rounded-lg">
+          + Book New Movie
+        </button>
+      </div>
+
+      <div class="space-y-3" id="history-container">
+        <!-- Seed Booking 1 -->
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div class="space-y-1">
+            <span class="text-xs bg-red-950 text-red-400 border border-red-800 px-2 py-0.5 rounded font-mono">CBK-20261019-001</span>
+            <h4 class="font-bold text-white text-base">Oppenheimer</h4>
+            <p class="text-xs text-slate-400">PVR Grand Cineplex &bull; 10:30 AM &bull; Seats: <span class="text-emerald-400 font-semibold">B3, B4</span></p>
+          </div>
+          <div class="text-left sm:text-right space-y-1">
+            <div class="text-amber-400 font-bold text-sm">₹ 500.00</div>
+            <span class="text-[11px] bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded">CONFIRMED (UPI)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: ADMIN DASHBOARD & CRUD -->
+    <section id="view-admin" class="hidden space-y-6">
+      <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+        <div>
+          <span class="text-xs text-amber-400 font-bold uppercase tracking-wider">Administrator View</span>
+          <h2 class="text-xl font-bold text-white">CineBook Control Panel</h2>
+        </div>
+        <span class="text-xs bg-amber-950/80 text-amber-300 border border-amber-800 px-2.5 py-1 rounded">Role: ADMIN</span>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <div class="text-xs text-slate-400">Total Movies</div>
+          <div class="text-2xl font-bold text-white mt-1">4</div>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <div class="text-xs text-slate-400">Active Showtimes</div>
+          <div class="text-2xl font-bold text-white mt-1">7</div>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <div class="text-xs text-slate-400">Total Bookings</div>
+          <div class="text-2xl font-bold text-white mt-1" id="admin-booking-count">1</div>
+        </div>
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+          <div class="text-xs text-slate-400">Gross Revenue</div>
+          <div class="text-2xl font-bold text-amber-400 mt-1" id="admin-revenue">₹ 500.00</div>
+        </div>
+      </div>
+
+      <!-- Admin Movies Management Table -->
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-3">
+        <div class="flex justify-between items-center">
+          <h3 class="text-base font-bold text-white">Movie Catalog (CRUD Preview)</h3>
+          <span class="text-xs text-slate-400">Integrated with MovieDAO & MovieServlet</span>
+        </div>
+
+        <div class="overflow-x-auto text-xs">
+          <table class="w-full text-left text-slate-300">
+            <thead class="bg-slate-950 text-slate-400 uppercase text-[11px] border-b border-slate-800">
+              <tr>
+                <th class="p-2.5">Title</th>
+                <th class="p-2.5">Genre</th>
+                <th class="p-2.5">Duration</th>
+                <th class="p-2.5">Language</th>
+                <th class="p-2.5 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800">
+              <tr>
+                <td class="p-2.5 font-bold text-white">Oppenheimer</td>
+                <td class="p-2.5">Biography / Drama</td>
+                <td class="p-2.5">180m</td>
+                <td class="p-2.5">English</td>
+                <td class="p-2.5 text-right text-emerald-400">Active</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-white">Interstellar</td>
+                <td class="p-2.5">Sci-Fi / Adventure</td>
+                <td class="p-2.5">169m</td>
+                <td class="p-2.5">English</td>
+                <td class="p-2.5 text-right text-emerald-400">Active</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-white">Inception</td>
+                <td class="p-2.5">Sci-Fi / Action</td>
+                <td class="p-2.5">148m</td>
+                <td class="p-2.5">English</td>
+                <td class="p-2.5 text-right text-emerald-400">Active</td>
+              </tr>
+              <tr>
+                <td class="p-2.5 font-bold text-white">The Dark Knight</td>
+                <td class="p-2.5">Action / Crime</td>
+                <td class="p-2.5">152m</td>
+                <td class="p-2.5">English</td>
+                <td class="p-2.5 text-right text-emerald-400">Active</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Interactive JavaScript Engine -->
+  <script>
+    const state = {
+      currentMovie: 'Oppenheimer',
+      currentPrice: 250.00,
+      currentTheatre: 'PVR Grand Cineplex',
+      currentTime: '10:30 AM',
+      bookedSeats: new Set(['B3', 'B4']), // Seeded booked seats
+      selectedSeats: new Set(),
+      bookings: [
+        {
+          ref: 'CBK-20261019-001',
+          movie: 'Oppenheimer',
+          theatre: 'PVR Grand Cineplex',
+          time: '10:30 AM',
+          seats: 'B3, B4',
+          total: '500.00',
+          mode: 'UPI'
+        }
+      ]
+    };
+
+    function switchTab(tabName) {
+      ['home', 'booking', 'confirmation', 'history', 'admin'].forEach(t => {
+        const el = document.getElementById('view-' + t);
+        if (el) el.classList.add('hidden');
+        const btn = document.getElementById('tab-btn-' + t);
+        if (btn) {
+          btn.classList.remove('bg-slate-800', 'text-white', 'text-red-500', 'font-semibold');
+          btn.classList.add('text-slate-300');
+        }
+      });
+
+      const activeView = document.getElementById('view-' + tabName);
+      if (activeView) activeView.classList.remove('hidden');
+
+      const activeBtn = document.getElementById('tab-btn-' + tabName);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-slate-800', 'text-white', 'font-semibold');
+        if (tabName !== 'admin') activeBtn.classList.add('text-red-500');
+      }
+
+      if (tabName === 'booking') {
+        renderSeatMap();
+      }
+    }
+
+    function startBooking(movie, price, theatre, time) {
+      state.currentMovie = movie;
+      state.currentPrice = price;
+      state.currentTheatre = theatre;
+      state.currentTime = time;
+      state.selectedSeats.clear();
+
+      document.getElementById('seat-view-movie-title').textContent = movie;
+      document.getElementById('seat-view-subtitle').textContent = `${theatre} • Today at ${time} • ₹ ${price.toFixed(2)} / ticket`;
+      document.getElementById('summary-movie').textContent = movie;
+      document.getElementById('summary-theatre').textContent = theatre;
+      document.getElementById('summary-time').textContent = time;
+      document.getElementById('summary-unit-price').textContent = `₹ ${price.toFixed(2)}`;
+
+      switchTab('booking');
+    }
+
+    function renderSeatMap() {
+      const container = document.getElementById('seat-map-container');
+      container.innerHTML = '';
+      const rows = ['A', 'B', 'C', 'D'];
+
+      rows.forEach(r => {
+        const rowDiv = document.createElement('div');
+        rowDiv.className = 'flex items-center gap-2';
+
+        const labelLeft = document.createElement('span');
+        labelLeft.className = 'w-5 text-xs font-bold text-slate-500';
+        labelLeft.textContent = r;
+        rowDiv.appendChild(labelLeft);
+
+        for (let c = 1; c <= 10; c++) {
+          const seatId = r + c;
+          const seat = document.createElement('div');
+          seat.className = 'seat';
+
+          const isBooked = state.bookedSeats.has(seatId);
+          const isSelected = state.selectedSeats.has(seatId);
+
+          if (isBooked) {
+            seat.className += ' bg-slate-950 border border-slate-800/80 text-slate-600 line-through cursor-not-allowed';
+            seat.textContent = c;
+            seat.title = `Seat ${seatId} is already booked`;
+          } else if (isSelected) {
+            seat.className += ' bg-emerald-500 text-white font-bold scale-105 shadow-md shadow-emerald-900/50';
+            seat.textContent = c;
+            seat.onclick = () => toggleSeat(seatId);
+          } else {
+            seat.className += ' bg-slate-800/90 border border-slate-700/60 text-slate-300 hover:bg-slate-700 hover:border-slate-500';
+            seat.textContent = c;
+            seat.onclick = () => toggleSeat(seatId);
+          }
+
+          rowDiv.appendChild(seat);
+        }
+
+        const labelRight = document.createElement('span');
+        labelRight.className = 'w-5 text-xs font-bold text-slate-500';
+        labelRight.textContent = r;
+        rowDiv.appendChild(labelRight);
+
+        container.appendChild(rowDiv);
+      });
+
+      updateSummary();
+    }
+
+    function toggleSeat(seatId) {
+      if (state.bookedSeats.has(seatId)) {
+        // Seat availability validation simulation
+        const alertEl = document.getElementById('seat-conflict-alert');
+        alertEl.classList.remove('hidden');
+        setTimeout(() => alertEl.classList.add('hidden'), 3500);
+        return;
+      }
+
+      if (state.selectedSeats.has(seatId)) {
+        state.selectedSeats.delete(seatId);
+      } else {
+        if (state.selectedSeats.size >= 8) {
+          alert('Maximum 8 seats allowed per booking.');
+          return;
+        }
+        state.selectedSeats.add(seatId);
+      }
+      renderSeatMap();
+    }
+
+    function updateSummary() {
+      const seatsArr = Array.from(state.selectedSeats).sort();
+      const count = seatsArr.length;
+      const total = count * state.currentPrice;
+
+      document.getElementById('summary-seats').textContent = count > 0 ? seatsArr.join(', ') : 'None';
+      document.getElementById('summary-count').textContent = count;
+      document.getElementById('summary-total').textContent = `₹ ${total.toFixed(2)}`;
+
+      const checkoutBtn = document.getElementById('btn-proceed-checkout');
+      checkoutBtn.disabled = (count === 0);
+    }
+
+    function openCheckoutModal() {
+      const seatsArr = Array.from(state.selectedSeats).sort();
+      const total = seatsArr.length * state.currentPrice;
+
+      document.getElementById('modal-movie').textContent = state.currentMovie;
+      document.getElementById('modal-seats').textContent = seatsArr.join(', ');
+      document.getElementById('modal-total').textContent = `₹ ${total.toFixed(2)}`;
+
+      document.getElementById('modal-checkout').classList.remove('hidden');
+    }
+
+    function closeCheckoutModal() {
+      document.getElementById('modal-checkout').classList.add('hidden');
+    }
+
+    function completePayment() {
+      const seatsArr = Array.from(state.selectedSeats).sort();
+      const total = (seatsArr.length * state.currentPrice).toFixed(2);
+      const mode = document.getElementById('checkout-payment-mode').value;
+      const refId = 'CBK-' + Math.floor(100000 + Math.random() * 900000);
+
+      // 1. Mark seats as booked
+      seatsArr.forEach(s => state.bookedSeats.add(s));
+
+      // 2. Add to history
+      const newBooking = {
+        ref: refId,
+        movie: state.currentMovie,
+        theatre: state.currentTheatre,
+        time: state.currentTime,
+        seats: seatsArr.join(', '),
+        total: total,
+        mode: mode
+      };
+      state.bookings.unshift(newBooking);
+
+      // 3. Update confirmation view
+      document.getElementById('confirm-ref').textContent = refId;
+      document.getElementById('confirm-movie').textContent = state.currentMovie;
+      document.getElementById('confirm-theatre').textContent = state.currentTheatre;
+      document.getElementById('confirm-time').textContent = `Today | ${state.currentTime}`;
+      document.getElementById('confirm-seats').textContent = seatsArr.join(', ');
+      document.getElementById('confirm-payment').textContent = `SUCCESS (${mode})`;
+      document.getElementById('confirm-total').textContent = `₹ ${total}`;
+
+      // 4. Update Admin metrics
+      document.getElementById('admin-booking-count').textContent = state.bookings.length;
+      const totalRev = state.bookings.reduce((sum, b) => sum + parseFloat(b.total), 0);
+      document.getElementById('admin-revenue').textContent = `₹ ${totalRev.toFixed(2)}`;
+
+      // 5. Update history view list
+      renderHistory();
+
+      closeCheckoutModal();
+      switchTab('confirmation');
+    }
+
+    function renderHistory() {
+      const container = document.getElementById('history-container');
+      container.innerHTML = '';
+
+      state.bookings.forEach(b => {
+        const item = document.createElement('div');
+        item.className = 'bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3';
+        item.innerHTML = `
+          <div class="space-y-1">
+            <span class="text-xs bg-red-950 text-red-400 border border-red-800 px-2 py-0.5 rounded font-mono">${b.ref}</span>
+            <h4 class="font-bold text-white text-base">${b.movie}</h4>
+            <p class="text-xs text-slate-400">${b.theatre} &bull; ${b.time} &bull; Seats: <span class="text-emerald-400 font-semibold">${b.seats}</span></p>
+          </div>
+          <div class="text-left sm:text-right space-y-1">
+            <div class="text-amber-400 font-bold text-sm">₹ ${b.total}</div>
+            <span class="text-[11px] bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded">CONFIRMED (${b.mode})</span>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    // Initialize
+    renderSeatMap();
+  </script>
+</body>
+</html>

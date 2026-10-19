@@ -1,0 +1,269 @@
+/* ==========================================================
+   CineBook - Premium Dark Cinema Theme
+   ========================================================== */
+
+:root {
+    --bg-main: #0c0f17;
+    --bg-card: #151a26;
+    --bg-card-hover: #1e2536;
+    --primary-red: #e50914;
+    --primary-hover: #b80710;
+    --accent-gold: #ffb703;
+    --text-white: #ffffff;
+    --text-muted: #9aa4b2;
+    --border-color: #232b3e;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-white);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* Navbar */
+.navbar-cinebook {
+    background-color: rgba(12, 15, 23, 0.95);
+    border-bottom: 1px solid var(--border-color);
+    backdrop-filter: blur(8px);
+}
+
+.navbar-brand {
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--text-white) !important;
+}
+
+.brand-red {
+    color: var(--primary-red);
+}
+
+.nav-link {
+    color: #cbd5e1 !important;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--primary-red) !important;
+}
+
+/* Cards & Containers */
+.card-cinema {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card-cinema:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    border-color: #313c54;
+}
+
+.movie-poster {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    display: block;
+}
+
+.movie-poster-sm {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* Buttons */
+.btn-cinema {
+    background-color: var(--primary-red);
+    color: #ffffff;
+    font-weight: 600;
+    border: none;
+    padding: 0.6rem 1.4rem;
+    border-radius: 8px;
+    transition: background-color 0.2s, transform 0.15s;
+}
+
+.btn-cinema:hover {
+    background-color: var(--primary-hover);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.btn-outline-cinema {
+    border: 1px solid var(--primary-red);
+    color: var(--primary-red);
+    font-weight: 600;
+    background: transparent;
+    border-radius: 8px;
+}
+
+.btn-outline-cinema:hover {
+    background-color: var(--primary-red);
+    color: #ffffff;
+}
+
+/* Hero Section */
+.hero-banner {
+    background: linear-gradient(180deg, rgba(12,15,23,0.3) 0%, rgba(12,15,23,1) 100%),
+                radial-gradient(circle at center, #26162a 0%, #0c0f17 100%);
+    padding: 60px 0 40px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Form Controls */
+.form-control-dark, .form-select-dark {
+    background-color: #10141f;
+    border: 1px solid var(--border-color);
+    color: #ffffff;
+    border-radius: 8px;
+}
+
+.form-control-dark:focus, .form-select-dark:focus {
+    background-color: #131927;
+    border-color: var(--primary-red);
+    color: #ffffff;
+    box-shadow: 0 0 0 0.25rem rgba(229, 9, 20, 0.25);
+}
+
+/* ==========================================================
+   Seat Selection Map Layout
+   ========================================================== */
+.theatre-screen-container {
+    perspective: 500px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.theatre-screen {
+    width: 80%;
+    height: 18px;
+    margin: 0 auto 10px auto;
+    background: linear-gradient(180deg, #e5e7eb 0%, rgba(255,255,255,0.1) 100%);
+    box-shadow: 0 12px 25px rgba(255, 255, 255, 0.35);
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    transform: rotateX(-30deg);
+}
+
+.screen-text {
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.seat-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    margin: 25px 0;
+}
+
+.seat-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.row-label {
+    width: 25px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.seat {
+    width: 34px;
+    height: 32px;
+    background-color: #242c3f;
+    border: 1px solid #3d4963;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #e2e8f0;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+}
+
+.seat:hover:not(.booked) {
+    background-color: #3b82f6;
+    border-color: #60a5fa;
+    transform: scale(1.1);
+}
+
+.seat.selected {
+    background-color: #22c55e !important;
+    border-color: #4ade80 !important;
+    color: #ffffff !important;
+    transform: scale(1.08);
+}
+
+.seat.booked {
+    background-color: #171b24 !important;
+    border-color: #222836 !important;
+    color: #555e70 !important;
+    cursor: not-allowed !important;
+    text-decoration: line-through;
+}
+
+/* Seat Legend */
+.seat-legend {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin-top: 15px;
+    padding: 12px;
+    background-color: #10141f;
+    border-radius: 8px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.legend-box {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+}
+
+.legend-available { background-color: #242c3f; border: 1px solid #3d4963; }
+.legend-selected { background-color: #22c55e; }
+.legend-booked { background-color: #171b24; border: 1px solid #222836; }
+
+/* Booking Ticket Confirmation Card */
+.ticket-receipt {
+    background: #141925;
+    border: 2px dashed #323d54;
+    border-radius: 16px;
+    padding: 30px;
+    position: relative;
+}
+
+/* Footer */
+footer {
+    background-color: #080a0f;
+    border-top: 1px solid var(--border-color);
+    padding: 25px 0;
+    margin-top: 50px;
+    color: var(--text-muted);
+}
