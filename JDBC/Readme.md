@@ -52,5 +52,5 @@ Replace `your_database` with your actual database name.
 
 ## 👩‍💻 Author
 
-**Kritika Agarwal**
+**Vishal Nainva**
 
