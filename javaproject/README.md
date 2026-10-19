@@ -191,7 +191,7 @@ mysql -u root -p < sql/schema.sql
 
 ### Step 1: Clone the Repository
 ```bash
-git clone https://github.com/vishwassaini6839-ui/javaproject.git
+git clone https://github.com/Vnainva-ui/javaproject.git
 cd javaproject
 ```
 
