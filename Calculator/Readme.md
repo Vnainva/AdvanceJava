@@ -57,5 +57,5 @@ Practicing input handling and conditional statements
 
 👩‍💻 Author
 
-Kritika Agarwal
+Vishal Nainva
 
