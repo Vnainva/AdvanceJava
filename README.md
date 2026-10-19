@@ -175,7 +175,7 @@ java RMI.client    # Run client
 
 ## 👨‍💻 Author
 
-**Sujal** — [GitHub: Sujals94](https://github.com/Sujals94)
+**Vishal** — [GitHub: Vnainva](https://github.com/Vnainva)
 
 ---
 
