@@ -49,5 +49,5 @@ The exact commands depend on the project's class names, package structure, and r
 
 ## 👩‍💻 Author
 
-**Kritika Agarwal**
+**Vishal Nainva**
 
