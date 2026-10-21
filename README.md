@@ -211,7 +211,7 @@ mvn clean package
 
 ## 👨‍💻 Author
 
-**Sujal** — [GitHub: Sujals94](https://github.com/Sujals94)
+**Vishal** —(https://github.com/Vnainva)
 
 ---
 
